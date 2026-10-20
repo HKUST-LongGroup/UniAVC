@@ -1,0 +1,1046 @@
+/* ===========================================================================
+   UniAVC project page — companion styles (used alongside Bulma)
+   ---------------------------------------------------------------------------
+   A dark, cinematic chrome: near-black canvas, hairline-framed glass panels,
+   and the paper's own figures sitting on white plates so they stay legible.
+   Bulma supplies the grid; everything below re-skins it.
+   =========================================================================== */
+
+:root {
+  /* --- canvas ------------------------------------------------------------- */
+  --bg:          #0a0b0e;
+  --bg-soft:     #101218;
+  --bg-lift:     #15181f;
+
+  /* --- type --------------------------------------------------------------- */
+  --ink:         #eef0f4;
+  --ink-2:       #a8aeba;
+  --ink-3:       #767d8a;
+
+  /* --- glass panels ------------------------------------------------------- */
+  --panel:       rgba(255, 255, 255, 0.035);
+  --panel-hi:    rgba(255, 255, 255, 0.065);
+  --rule:        rgba(255, 255, 255, 0.10);
+  --rule-strong: rgba(255, 255, 255, 0.20);
+
+  /* --- accents (brightened from the paper's own four hues) ---------------- */
+  --uniavc-blue:   #5aa2ff;
+  --uniavc-cyan:   #46d0e0;
+  --uniavc-green:  #45d789;
+  --uniavc-violet: #a78bfa;
+  --uniavc-ink:    var(--ink);
+  --uniavc-rule:   var(--rule);
+
+  --grad: linear-gradient(100deg, #5aa2ff 0%, #a78bfa 48%, #45d789 100%);
+
+  /* the plate the paper's light figures are mounted on */
+  --plate: #ffffff;
+
+  --radius:   16px;
+  --radius-s: 10px;
+}
+
+/* native controls (the scrubber, scrollbars, form chrome) follow the page */
+html { scroll-behavior: smooth; color-scheme: dark; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  font-family: 'Noto Sans', 'Google Sans', -apple-system, BlinkMacSystemFont,
+               'Segoe UI', sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Two faint accent halos behind the hero; fixed so they read as light in the
+   room rather than a band that scrolls away. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(900px 520px at 18% -8%,  rgba(90, 162, 255, 0.16), transparent 65%),
+    radial-gradient(760px 460px at 84% 4%,   rgba(167, 139, 250, 0.13), transparent 65%),
+    radial-gradient(700px 420px at 50% 96%,  rgba(69, 215, 137, 0.07), transparent 70%);
+}
+body > * { position: relative; z-index: 1; }
+
+/* Bulma paints .title/.content/.footer light; on this canvas they are dark. */
+.title, .subtitle, h1, h2, h3, h4, h5, h6 { color: var(--ink); }
+.content { color: var(--ink-2); }
+a { color: var(--uniavc-blue); }
+a:hover { color: var(--uniavc-cyan); }
+hr { background-color: var(--rule); }
+
+.footer .icon-link { font-size: 25px; color: var(--ink-2); }
+
+/* ---- Top bar --------------------------------------------------------------
+   Slim, translucent, and only the anchors that already exist on the page. */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: rgba(10, 11, 14, 0.72);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+.topbar.is-stuck {
+  border-bottom-color: var(--rule);
+  background: rgba(10, 11, 14, 0.88);
+}
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  height: 56px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+.topbar-mark {
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 800;
+  font-size: 1.02rem;
+  letter-spacing: -0.01em;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  white-space: nowrap;
+}
+.topbar-links {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-left: auto;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.topbar-links::-webkit-scrollbar { display: none; }
+.topbar-links a {
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  white-space: nowrap;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+.topbar-links a:hover { color: var(--ink); background: var(--panel-hi); }
+.topbar-links a.is-active { color: var(--ink); background: var(--panel-hi); }
+@media (max-width: 700px) {
+  .topbar-links { gap: 0; }
+  .topbar-links a { padding: 5px 8px; font-size: 0.8rem; }
+}
+
+/* ---- Title block ---------------------------------------------------------- */
+.hero .hero-body { padding-top: 4.2rem; padding-bottom: 2.4rem; }
+.publication-title {
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+  color: var(--ink);
+}
+.publication-title .uniavc-mark {
+  font-weight: 800;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.publication-authors { font-family: 'Google Sans', sans-serif; color: var(--ink-2); }
+.publication-authors a:link,
+.publication-authors a:visited { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule-strong); }
+.publication-authors a:hover { color: var(--uniavc-cyan); border-bottom-color: var(--uniavc-cyan); }
+.author-block { white-space: nowrap; }
+.affiliation-block { margin-top: 0.5rem; color: var(--ink-3); }
+.affiliation-block .author-block { margin: 0 0.5rem; }
+
+/* Submission banner — reads as a venue tag without implying acceptance. */
+.venue-tag {
+  display: inline-block;
+  padding: 3px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--rule-strong);
+  background: var(--panel);
+  color: var(--ink-2);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ---- Link buttons --------------------------------------------------------- */
+.publication-links { margin-top: 1.5rem; }
+.publication-links .button {
+  border-radius: 999px;
+  border: 1px solid var(--rule-strong);
+  background: var(--panel);
+  color: var(--ink);
+  font-weight: 600;
+  box-shadow: none;
+  transition: transform 0.14s ease, border-color 0.2s ease, background 0.2s ease;
+}
+.publication-links .button:hover {
+  transform: translateY(-2px);
+  border-color: var(--uniavc-blue);
+  background: var(--panel-hi);
+  color: var(--ink);
+}
+.publication-links .is-disabled-link { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+.link-block { display: inline-block; margin: 0.22rem; }
+
+/* ---- Section headings ----------------------------------------------------- */
+.section { padding: 3.2rem 1.5rem; }
+.section-title {
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+/* A short gradient rule under every centred section title. */
+.section-title.has-text-centered::after {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 3px;
+  margin: 0.9rem auto 0;
+  border-radius: 999px;
+  background: var(--grad);
+  opacity: 0.9;
+}
+
+/* ---- Contributions list --------------------------------------------------- */
+.contributions-list { list-style: none; margin: 1.6rem 0 0; padding: 0; }
+.contributions-list li {
+  display: flex;
+  gap: 0.9rem;
+  align-items: flex-start;
+  padding: 0.95rem 1.15rem;
+  margin-bottom: 0.6rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-s);
+  background: var(--panel);
+  font-size: 0.97rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+.contributions-list li:hover {
+  border-color: var(--rule-strong);
+  background: var(--panel-hi);
+  transform: translateY(-1px);
+}
+.contributions-list li b { color: var(--ink); }
+.contributions-list .contrib-num {
+  flex-shrink: 0;
+  width: 1.65rem; height: 1.65rem;
+  border-radius: 50%;
+  background: var(--grad);
+  color: #08090c;
+  font-size: 0.78rem;
+  font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 1px;
+}
+
+/* ---- Figures --------------------------------------------------------------
+   Every figure in the paper is a light, opaque image. Mounting each one on a
+   white plate with padding turns "a glaring white rectangle on a dark page"
+   into a deliberate mounted figure that keeps its own contrast.
+
+   --fig-scale remains the single knob the three view sizes turn. */
+:root { --fig-scale: 0.8; }
+
+figure.fig img {
+  width: calc(100% * var(--fig-scale));
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+  box-sizing: border-box;
+  background: var(--plate);
+  padding: 12px;
+  border-radius: var(--radius);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--rule);
+}
+figure.fig figcaption {
+  font-size: 0.92rem;
+  color: var(--ink-3);
+  margin-top: 0.9rem;
+  line-height: 1.5;
+  width: calc(100% * var(--fig-scale));
+  margin-left: auto; margin-right: auto;
+}
+b.fig-keyword {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 600;
+}
+b, strong { font-weight: 600; color: var(--ink); }
+
+/* The teaser is the page's first impression: let it run full width. The class
+   sits on the section, not the figure, so it is reached through the section. */
+.teaser figure.fig img { width: 100%; padding: 14px; }
+.teaser figure.fig figcaption { width: 100%; }
+
+/* A pair of table figures sits side by side. The two source images have
+   different aspect ratios, so a shared WIDTH would give them different heights
+   and leave their captions misaligned; instead each one is given a flex share
+   equal to its own aspect ratio, which makes the pair come out the same height
+   however wide the column is, and keeps each image undistorted. */
+.table-pair {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1.5rem;
+  align-items: flex-start;
+  width: calc(100% * var(--fig-scale));
+  max-width: 100%;
+  margin: 0 auto;
+}
+.table-half {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+/* the flex share IS the aspect ratio of the image in that cell, so both cells
+   resolve to the same height; see the figures' pixel sizes in static/images */
+.table-half.is-joint-gen { flex: 2.044 1 0; }   /* 1210 x 592 */
+.table-half.is-cross-gen { flex: 1.794 1 0; }   /* 1044 x 582 */
+/* Scoped through .table-pair so this beats `figure.fig img`. Without that
+   extra class the image would take the 80% reduction here AND the one already
+   applied to the pair, and come out at 64% of the column. */
+.table-pair .table-half img {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  border-radius: var(--radius-s);
+}
+@media (max-width: 760px) {
+  .table-pair { flex-wrap: wrap; flex-direction: column; }
+  .table-half { width: 100%; }
+}
+
+/* Figure captions that mirror the paper's own wording. */
+.paper-caption {
+  font-size: 0.88rem;
+  color: var(--ink-3);
+  line-height: 1.55;
+  margin-top: 0.7rem;
+}
+.paper-caption .cap-label { font-weight: 600; color: var(--ink-2); }
+
+/* A figure placed beside the text it supports, as the paper does with the
+   single-vs-dual schedule panel. */
+.fig-side {
+  display: grid;
+  /* sized down from 20rem so the panel sits with the text rather than
+     dominating it; the figure beside it is not scaled by --fig-scale */
+  grid-template-columns: 1fr 15rem;
+  gap: 1.8rem;
+  align-items: start;
+}
+.fig-side .fig-side-fig img { width: 100%; padding: 7px; }
+.fig-side .fig-side-text { min-width: 0; }
+.fig-side .fig-side-text .title { margin-bottom: 0.9rem; }
+.fig-side figure.fig { margin: 0; }
+/* The schedule panel is centred against the text block beside it (it was
+   top-aligned, which left it hanging above the paragraph's baseline), and its
+   caption is kept to a single line under it. */
+.fig-side { align-items: center; }
+.fig-side .fig-side-fig { text-align: center; }
+.fig-side .fig-side-fig figcaption {
+  white-space: nowrap;
+  text-align: center;
+  margin-left: 0;
+  margin-right: 0;
+}
+@media (max-width: 900px) {
+  .fig-side .fig-side-fig figcaption { white-space: normal; }
+}
+
+@media (max-width: 900px) {
+  .fig-side { grid-template-columns: 1fr; }
+  .fig-side .fig-side-fig { max-width: 15rem; margin: 0 auto; }
+}
+
+/* ---- Shared gallery chrome ------------------------------------------------ */
+.gallery-tabs { margin-bottom: 1.6rem; }
+.gallery-tabs ul { border-bottom: none; }
+/* Bulma's toggle tabs are a light segmented control; rebuild them as pills. */
+.gallery-tabs ul li a {
+  border: 1px solid var(--rule) !important;
+  border-radius: 999px !important;
+  background: var(--panel);
+  color: var(--ink-2) !important;
+  font-weight: 600;
+  font-size: 0.86rem;
+  padding: 0.5em 1.25em;
+  transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+.gallery-tabs ul li a:hover { border-color: var(--rule-strong) !important; color: var(--ink) !important; }
+.gallery-tabs ul li.is-active a {
+  background: var(--grad) !important;
+  border-color: transparent !important;
+  color: #08090c !important;
+}
+.gallery-tabs ul li + li { margin-left: 0.5rem; }
+
+.gallery-hint {
+  font-size: 0.9rem;
+  color: var(--ink-3);
+  margin-bottom: 1.2rem;
+  line-height: 1.6;
+}
+.gallery-hint b { color: var(--ink-2); }
+.gallery-empty {
+  padding: 2.4rem;
+  text-align: center;
+  color: var(--ink-3);
+  border: 1px dashed var(--rule-strong);
+  border-radius: var(--radius);
+}
+
+/* ===========================================================================
+   Panel blocks — one bordered container per sample, shared by the comparison,
+   demo and inference sections so a sample reads as one unit everywhere.
+   =========================================================================== */
+/* NOT .panel-block: Bulma owns that name and makes it display:flex, which
+   laid the instruction out BESIDE the panels instead of above them. */
+.sample-block {
+  display: block;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 1.1rem;
+  margin-bottom: 1.4rem;
+  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  box-shadow: 0 20px 55px rgba(0,0,0,0.5);
+}
+
+/* ===========================================================================
+   Comparison section — four frame-locked panels plus a shared transport
+   =========================================================================== */
+.cmp-stage {
+  display: grid;
+  /* four panels at one size, so a visible difference is attributable to the
+     method and not to one panel being rendered larger than another */
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  align-items: start;
+}
+/* Focus keeps all four and reflows to 2x2, which doubles each panel's width. */
+.cmp-stage.is-focus { grid-template-columns: repeat(2, 1fr); }
+
+.cmp-cell {
+  position: relative;
+  border-radius: var(--radius-s);
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 6px 22px rgba(0,0,0,0.55);
+  cursor: pointer;
+  transition: outline-color 0.2s ease;
+  outline: 1px solid var(--rule);
+  outline-offset: -1px;
+}
+.cmp-cell video {
+  width: 100%;
+  display: block;
+  /* clips are 1280x704 or 1280x720; contain (not cover) keeps the native
+     frame intact rather than trimming the sides of a 704-tall clip */
+  aspect-ratio: 1280 / 704;
+  object-fit: contain;
+  background: #000;
+}
+/* the method under test keeps a visible edge even when not audible */
+.cmp-cell.is-ours { outline: 2px solid var(--uniavc-blue); outline-offset: -2px; }
+.cmp-cell.is-audible { outline: 3px solid var(--uniavc-green); outline-offset: -3px; }
+
+.cmp-cell .cmp-tag {
+  position: absolute;
+  top: 7px; left: 7px;
+  padding: 3px 9px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #fff;
+  background: rgba(0,0,0,0.62);
+  border-radius: 6px;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+.cmp-cell.is-ours .cmp-tag {
+  background: var(--grad);
+  color: #08090c;
+}
+.cmp-cell .cmp-audio {
+  position: absolute;
+  bottom: 7px; right: 7px;
+  width: 26px; height: 26px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.62);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 12px;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+.cmp-cell.is-audible .cmp-audio { background: var(--uniavc-green); color: #08090c; }
+
+/* Focus widens the column: the 2x2 reflow halves the column count, and this
+   widens the column too, so each panel really is larger rather than just
+   rearranged. */
+.container.is-max-desktop.is-focus-wide { max-width: min(1500px, 94vw); }
+
+/* transport */
+.cmp-transport {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  margin: 0.9rem 0 1.4rem;
+}
+.cmp-transport .btn {
+  border: 1px solid var(--rule-strong);
+  background: var(--panel);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 0.87rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+.cmp-transport .btn:hover {
+  border-color: var(--uniavc-blue);
+  color: var(--ink);
+  background: var(--panel-hi);
+}
+.cmp-transport .btn.is-on {
+  background: var(--grad);
+  border-color: transparent;
+  color: #08090c;
+}
+.cmp-transport .scrub {
+  flex: 1 1 220px;
+  min-width: 160px;
+  accent-color: var(--uniavc-blue);
+  cursor: pointer;
+}
+.cmp-transport .timecode {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.82rem;
+  color: var(--ink-3);
+  min-width: 3.4rem;
+  text-align: right;
+}
+.cmp-counter { font-size: 0.82rem; color: var(--ink-3); min-width: 4.2rem; }
+
+/* In the demo and inference sections the buttons are their own centred row and
+   the progress bar sits underneath, rather than all of it sharing one line. */
+.cmp-transport.aligned-center { justify-content: center; margin-bottom: 0.5rem; }
+.cmp-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin: 0 0 1.1rem;
+}
+.cmp-progress .scrub {
+  flex: 1 1 auto;
+  min-width: 120px;
+  accent-color: var(--uniavc-blue);
+  cursor: pointer;
+}
+.cmp-progress .timecode {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.82rem;
+  color: var(--ink-3);
+  min-width: 3.4rem;
+  text-align: right;
+}
+
+/* the instruction prompt, stated once above the panels */
+.cmp-prompt {
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--uniavc-blue);
+  background: var(--panel);
+  border-radius: 0 var(--radius-s) var(--radius-s) 0;
+  padding: 0.9rem 1.1rem;
+  margin-bottom: 1.1rem;
+}
+.cmp-prompt .who {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--uniavc-blue);
+  font-weight: 700;
+}
+.cmp-prompt .what {
+  font-size: 0.97rem;
+  line-height: 1.55;
+  margin-top: 0.3rem;
+  color: var(--ink);
+}
+
+/* Pinpointed claims: each item states one fact, so the argument can be read at
+   a glance rather than reconstructed from a paragraph. */
+.pinpoint-list { list-style: none; margin: 0; padding: 0; }
+.pinpoint-list li {
+  position: relative;
+  padding-left: 1.2rem;
+  margin-bottom: 0.85rem;
+  line-height: 1.55;
+  font-size: 0.95rem;
+  color: var(--ink-2);
+}
+.pinpoint-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.58em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--grad);
+}
+.pinpoint-list li b { color: var(--ink); }
+
+/* ---- Prompt markup --------------------------------------------------------
+   The paper annotates every instruction with four roles, and the page reuses
+   the same colours so a reader who has seen the figures reads them the same
+   way here. Roles are assigned by `highlights.py`.
+     red    the imperative lead      "Modify", "Replace the background"
+     green  the edit target          what actually changes
+     blue   an attribute of it       the description that pins the target down
+     purple the preservation clause  "while keeping ... unchanged"
+   On the dark canvas the same four roles are used, lifted for contrast. */
+.hl-act, .hl-target, .hl-attr, .hl-keep {
+  font-weight: 600;
+  padding: 0 0.05em;
+  border-radius: 3px;
+}
+.hl-act    { color: #ff7b72; }
+.hl-target { color: #4ade80; }
+.hl-attr   { color: #38bdf8; }
+.hl-keep   { color: #c4a5ff; }
+
+/* filmstrip -- one layout for every section. The tiles are a fixed width and
+   the row is centred, so a section with two samples looks the same as one with
+   ten instead of stretching them across the column or hugging the left. */
+.filmstrip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 1.1rem;
+}
+.filmstrip button {
+  width: 132px;
+  flex: 0 0 auto;
+  position: relative;
+  border: 2px solid transparent;
+  border-radius: 9px;
+  overflow: hidden;
+  padding: 0;
+  background: #000;
+  cursor: pointer;
+  display: block;
+  line-height: 0;
+  opacity: 0.55;
+  outline: 1px solid var(--rule);
+  outline-offset: -1px;
+  transition: opacity 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+.filmstrip button:hover { opacity: 1; transform: translateY(-2px); }
+.filmstrip button.is-current {
+  opacity: 1;
+  border-color: var(--uniavc-blue);
+  box-shadow: 0 0 0 3px rgba(90, 162, 255, 0.22);
+}
+.filmstrip img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+.filmstrip .strip-num {
+  position: absolute;
+  left: 0; bottom: 0;
+  padding: 1px 6px;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1.6;
+  color: #fff;
+  background: rgba(0,0,0,0.62);
+  border-radius: 0 6px 0 0;
+}
+
+/* ===========================================================================
+   Demo cards — a source clip beside the outputs answering it
+   =========================================================================== */
+/* inside the demo/inference block the card is the inner frame, so it does not
+   repeat the outer border */
+.sample-block .demo-card {
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin-bottom: 0;
+  background: none;
+}
+.demo-card {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-bottom: 1.1rem;
+  background: var(--panel);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+.demo-card .demo-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+  flex-wrap: wrap;
+}
+.demo-card .demo-head .idx {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--uniavc-blue);
+}
+.demo-card .demo-head .sam {
+  font-size: 0.78rem;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+.demo-row {
+  display: grid;
+  /* mirrors .cmp-stage: the source and its instructions share one row at
+     equal size, and Focus reflows the same four to 2x2 */
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  align-items: start;
+}
+/* A card with fewer than four clips centres its cells at the four-across
+   width, so every clip on the page is shown at the same resolution. */
+.demo-row.is-narrow {
+  grid-template-columns: repeat(2, 1fr);
+  width: 50%;
+  margin: 0 auto;
+}
+.demo-row.is-focus { grid-template-columns: repeat(2, 1fr); }
+.demo-row.is-focus.is-narrow { width: 100%; }
+@media (max-width: 760px) {
+  .demo-row, .demo-row.is-narrow { grid-template-columns: repeat(2, 1fr); width: 100%; }
+}
+
+.cell {
+  position: relative;
+  border-radius: var(--radius-s);
+  overflow: hidden;
+  background: #000;
+  cursor: pointer;
+  outline: 1px solid var(--rule);
+  outline-offset: -1px;
+}
+.cell video {
+  width: 100%;
+  display: block;
+  aspect-ratio: 1280 / 704;
+  object-fit: contain;
+  background: #000;
+}
+.cell .cell-tag {
+  position: absolute;
+  top: 6px; left: 6px;
+  padding: 3px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(0,0,0,0.62);
+  border-radius: 5px;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+.cell.is-source .cell-tag { background: rgba(0,0,0,0.78); }
+.cell.is-output .cell-tag { background: var(--grad); color: #08090c; }
+.cell .cell-audio {
+  position: absolute;
+  bottom: 6px; right: 6px;
+  width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.62);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 11px;
+  pointer-events: none;
+}
+.cell.is-audible { outline: 3px solid var(--uniavc-green); outline-offset: -3px; }
+.cell.is-audible .cell-audio { background: var(--uniavc-green); color: #08090c; }
+
+.demo-note {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+  display: flex;
+  gap: 0.55rem;
+  align-items: flex-start;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-s);
+  background: rgba(255,255,255,0.02);
+}
+.demo-note .instr-num {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem; height: 1.25rem;
+  margin-top: 1px;
+  border-radius: 50%;
+  background: rgba(90, 162, 255, 0.16);
+  color: var(--uniavc-blue);
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+/* ===========================================================================
+   Joint gallery — tiles mirroring the template's grid
+   =========================================================================== */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+@media (max-width: 900px) { .video-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .video-grid { grid-template-columns: 1fr; } }
+
+/* Focus enlarges the tiles to a 2x2 grid, alongside the widened column. */
+.video-grid.is-focus { grid-template-columns: repeat(2, 1fr); }
+.joint-toolbar, .infer-toolbar { justify-content: center; margin: 0 0 1.3rem; }
+
+.video-card {
+  position: relative;
+  border-radius: var(--radius-s);
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 6px 22px rgba(0,0,0,0.55);
+  cursor: pointer;
+  outline: 1px solid var(--rule);
+  outline-offset: -1px;
+  /* the generated clips are natively 1280x704, so the tile takes that shape
+     instead of a square that would crop most of the frame away */
+  aspect-ratio: 1280 / 704;
+  transition: transform 0.2s ease, outline-color 0.2s ease;
+}
+.video-card:hover { transform: translateY(-3px); outline-color: var(--rule-strong); }
+.video-card video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.video-card .badge {
+  position: absolute;
+  top: 8px; left: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(0,0,0,0.58);
+  border-radius: 999px;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+.video-card .badge .dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #9aa0ab;
+}
+.video-card.is-audio .badge .dot { background: var(--uniavc-green); }
+.video-card .sound-icon {
+  position: absolute;
+  bottom: 8px; right: 8px;
+  width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.58);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 14px;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+.video-card.is-active {
+  outline: 3px solid var(--uniavc-blue);
+  outline-offset: -3px;
+  box-shadow: 0 0 0 6px rgba(90, 162, 255, 0.16);
+}
+
+/* ---- BibTeX --------------------------------------------------------------- */
+.bibtex-block pre {
+  background: var(--bg-lift);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-s);
+  padding: 1.2rem 1.35rem;
+  font-size: 0.85rem;
+  overflow-x: auto;
+  text-align: left;
+  color: var(--ink-2);
+}
+.bibtex-block code { color: #9ecbff; background: none; }
+
+/* ---- Inference modes ------------------------------------------------------ */
+.infer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+.infer-cell { position: relative; }
+/* the mode name rides on the clip, matching the tags used by the comparison
+   and demo blocks rather than sitting in a header row above it */
+.infer-cell .cell-tag {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  z-index: 2;
+  max-width: calc(100% - 44px);
+  padding: 3px 9px;
+  font-size: 10px;
+  line-height: 1.35;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(0,0,0,0.66);
+  border-radius: 6px;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+.infer-cell.is-source .cell-tag { background: rgba(0,0,0,0.78); }
+.infer-cell video {
+  display: block;
+  width: 100%;
+  /* native 1280x704 -- keep the true aspect rather than cropping to 16:9 */
+  aspect-ratio: 1280 / 704;
+  background: #000;
+  border-radius: var(--radius-s);
+  object-fit: contain;
+}
+.infer-cell .cell-audio {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.62);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  cursor: pointer;
+  z-index: 2;
+}
+.infer-cell.is-audible { outline: 3px solid var(--uniavc-green); outline-offset: -3px; border-radius: var(--radius-s); }
+.infer-cell.is-audible .cell-audio { background: var(--uniavc-green); color: #08090c; }
+.infer-cell.is-source video { outline: 2px solid var(--rule-strong); outline-offset: -2px; }
+/* Focus enlarges the modes to a 2x2 grid, alongside the widened column. */
+.infer-grid.is-focus { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 900px) {
+  .infer-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---- Footer --------------------------------------------------------------- */
+.footer {
+  background: transparent;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-3);
+  padding: 2.4rem 1.5rem;
+}
+.footer a { color: var(--ink-2); border-bottom: 1px solid var(--rule-strong); }
+.footer a:hover { color: var(--uniavc-cyan); border-bottom-color: var(--uniavc-cyan); }
+
+/* ---- Scroll reveal --------------------------------------------------------
+   Sections fade up as they enter the viewport. Purely additive: with the
+   observer absent, or motion reduced, everything is simply already visible. */
+.reveal { opacity: 0; transform: translateY(20px); }
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.75s cubic-bezier(0.22, 0.7, 0.3, 1),
+              transform 0.75s cubic-bezier(0.22, 0.7, 0.3, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal.is-in { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .filmstrip button:hover, .video-card:hover,
+  .contributions-list li:hover, .publication-links .button:hover { transform: none !important; }
+}
+
+/* ---- Small screens -------------------------------------------------------- */
+@media (max-width: 900px) {
+  .cmp-stage { grid-template-columns: 1fr 1fr; }
+  .cmp-stage.is-focus { grid-template-columns: 1fr; }
+}
+
+/* ===========================================================================
+   View sizes
+   ---------------------------------------------------------------------------
+   One page, three sizes, and the content is identical across all three so the
+   samples a reader sees can never drift between them.
+
+     index.html   standard
+     index2.html  everything larger
+     index3.html  the figures larger, every text block at its standard size
+   =========================================================================== */
+
+/* ---- index2.html: everything larger -------------------------------------- */
+body.is-large .container.is-max-desktop {
+  max-width: none;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+@media (min-width: 1600px) {
+  body.is-large .container.is-max-desktop { padding-left: 4rem; padding-right: 4rem; }
+}
+body.is-large .columns.is-centered .column.is-four-fifths { width: 88%; }
+body.is-large .video-grid { grid-template-columns: repeat(2, 1fr); }
+body.is-large .cmp-prompt .what { font-size: 1.08rem; }
+body.is-large .demo-note { font-size: 1rem; }
+body.is-large .pinpoint-list li { font-size: 1.05rem; }
+body.is-large .paper-caption { font-size: 1rem; }
+body.is-large .gallery-hint { font-size: 1rem; }
+body.is-large { --fig-scale: 1; }
+
+/* ---- index3.html: the figures larger, the text untouched ------------------ */
+/* Nothing here touches the container or any font size, so the abstract, the
+   highlights, the hints and every caption wrap exactly as they do on
+   index.html. Only --fig-scale changes: the figures lose the 0.8 reduction
+   and are drawn at full column width, while the text keeps its own measure. */
+body.is-medium { --fig-scale: 1; }
+
+/* Below the standard container width a full-size figure would crowd the
+   column, so the reduction comes back partway. */
+@media (max-width: 960px) {
+  body.is-medium { --fig-scale: 0.9; }
+}

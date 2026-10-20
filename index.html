@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UniAVC: Unified Audio-Video Creation via Progressive Training and Asymmetric Scheduling</title>
+  <meta name="description"
+        content="UniAVC performs text-conditioned joint audio-video generation, bidirectional cross-modal synthesis, and instruction-guided editing of either or both modalities from a single set of weights.">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro">
+  <link rel="stylesheet" href="static/css/index_black.css?v=c884a875">
+  <link rel="stylesheet" href="static/css/hero_black.css?v=784b0732">
+</head>
+<body class="is-black">
+
+<!-- ===================== TOP BAR ===================== -->
+<nav class="topbar" id="topbar">
+  <div class="topbar-inner">
+    <a href="#top" class="topbar-mark">UniAVC</a>
+    <div class="topbar-links" id="topbar-links">
+      <a href="#abstract">Abstract</a>
+      <a href="#comparison">Comparison</a>
+      <a href="#demos">Demos</a>
+      <a href="#inference">Inference Modes</a>
+      <a href="#joint">Generation</a>
+      <a href="#bibtex">BibTeX</a>
+    </div>
+    <button class="sound-toggle" id="sound-toggle" type="button"
+            aria-pressed="false" aria-label="Turn background music on">
+      <span class="sound-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="sound-label">Music off</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ===================== HERO / TITLE ===================== -->
+<section class="hero hero-cine" id="top">
+
+  <div class="cine-stage" id="cine-stage" aria-hidden="true">
+    <div class="cine-nebula"></div>
+    <canvas class="cine-canvas" id="cine-canvas"></canvas>
+    <div class="cine-wall" id="cine-wall"></div>
+    <div class="cine-scrim"></div>
+    <div class="cine-grain"></div>
+  </div>
+
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+
+          <h1 class="title is-2 publication-title">
+            <span class="uniavc-mark">UniAVC</span>: Unified Audio-Video Creation via Progressive Training and Asymmetric Scheduling
+          </h1>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Kien T. Pham<sup>1</sup>,</span>
+            <span class="author-block">Yuhao Liu<sup>2</sup>,</span>
+            <span class="author-block">Chong Hou Choi<sup>2</sup>,</span>
+            <span class="author-block">Zhenqi He<sup>1</sup>,</span>
+            <span class="author-block">Yanghao Wang<sup>1</sup>,</span>
+            <span class="author-block">Chenyang Lei<sup>2</sup>,</span>
+            <span class="author-block">Rui Liu<sup>2</sup>,</span>
+            <span class="author-block">Qifeng Chen<sup>1</sup>,</span>
+            <span class="author-block">Long Chen<sup>1</sup></span>
+          </div>
+
+          <div class="is-size-6 publication-authors affiliation-block">
+            <span class="author-block"><sup>1</sup>The Hong Kong University of Science and Technology</span>
+            <span class="author-block"><sup>2</sup>Huawei Research</span>
+          </div>
+
+          <div class="is-size-6 publication-authors" style="margin-top:0.3rem">
+            <span class="author-block">
+              <a href="mailto:tkpham@connect.ust.hk">tkpham@connect.ust.hk</a>,
+              <a href="mailto:longchen@ust.hk">longchen@ust.hk</a>
+            </span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2610.24791" class="button is-dark is-rounded">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/HKUST-LongGroup/UniAVC" class="button is-dark is-rounded">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#comparison" class="button is-dark is-rounded">
+                  <span class="icon"><i class="fas fa-scale-balanced"></i></span>
+                  <span>Comparison</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#demos" class="button is-dark is-rounded">
+                  <span class="icon"><i class="fas fa-wand-magic-sparkles"></i></span>
+                  <span>Demos</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#inference" class="button is-dark is-rounded">
+                  <span class="icon"><i class="fas fa-sliders"></i></span>
+                  <span>Inference Modes</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#joint" class="button is-dark is-rounded">
+                  <span class="icon"><i class="fas fa-photo-film"></i></span>
+                  <span>Generation</span>
+                </a>
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cine-scroll" id="cine-scroll" aria-hidden="true">
+    <span>Scroll</span>
+    <i class="fas fa-chevron-down"></i>
+  </div>
+</section>
+
+<!-- ===================== TEASER ===================== -->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <figure class="fig">
+        <img src="static/images/teaser.png?v=ebf32234" alt="UniAVC task overview">
+        <figcaption class="paper-caption">
+          UniAVC performs joint audio-video generation, cross-modal generation in either
+          direction, and instruction-guided editing of either or both modalities from one set
+          of weights.
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ABSTRACT ===================== -->
+<section class="section reveal" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3 section-title">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Unified audio-video creation requires a single model capable of text-conditioned joint
+            synthesis, bidirectional cross-modal generation, and instruction-guided editing across
+            both modalities. Existing methods rely heavily on paired corpora, which are scarce for
+            joint generation and even rarer for editing. Consequently, they are spent learning
+            single-branch generative and editing capabilities that abundant unimodal data could
+            readily teach, rather than on the cross-modal coupling. Furthermore, prevailing systems
+            apply a single shared noise schedule to both modalities, neglecting two critical
+            limitations. First, due to the significant discrepancy in information density, video
+            requires prolonged high noise to organize spatial and motion structure, whereas the
+            sparser audio signal can settle earlier during the synthesis process, the dynamics a
+            uniform schedule might compromise. Second, lockstep denoising leaves asymmetric
+            workflows, such as conditioning on one modality to synthesize or edit another,
+            untrained. We present <b>UniAVC</b>, which addresses both obstacles. It first trains each
+            branch on unimodal dataset to full generative and editing competence, and subsequently
+            dedicates paired data to exploit cross-modal correspondence. Modality-decoupled
+            schedulers meanwhile warp the noise schedule independently from a shared timestep, while
+            subtasks with one clean modality directly supervise asymmetric configurations. These
+            settings respectively enable <i>intent-aware editing</i>, which preserves one modality
+            intact while enlisting it to constrain the other, and <i>post-inference
+            self-refinement</i>, which regenerates only an unsatisfactory branch against an accepted
+            one. UniAVC thus spans multiple creation tasks from a single set of weights without
+            task-specific adapters. Extensive experiments demonstrate that UniAVC achieves versatile
+            audio-video generation and editing with competitive performance across different
+            operating modes.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== HIGHLIGHTS ===================== -->
+<section class="section reveal" style="padding-top:0">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3 section-title has-text-centered">Highlights</h2>
+        <ul class="contributions-list">
+          <li>
+            <span class="contrib-num">1</span>
+            <span><b>Unified generation and editing framework.</b> A single model natively performs
+            text-conditioned joint audio-video generation, bidirectional cross-modal synthesis, and
+            instruction-guided editing of either or both modalities without requiring task-specific
+            adapters.</span>
+          </li>
+          <li>
+            <span class="contrib-num">2</span>
+            <span><b>Progressive training paradigm.</b> By first mastering unimodal generative and
+            editing capabilities on single-modality corpora before freezing both branches, our
+            framework dedicates scarce paired datasets entirely to establishing cross-modal
+            correspondence and temporal synchronization.</span>
+          </li>
+          <li>
+            <span class="contrib-num">3</span>
+            <span><b>Asymmetric noise-level scheduling.</b> Modality-decoupled schedulers derive
+            per-branch noise trajectories from a shared timestep index to steer training off the
+            diagonal of the 2D noise space, while clean-branch subtasks explicitly supervise extreme
+            boundary states, together enabling intent-aware editing and post-inference
+            self-refinement.</span>
+          </li>
+          <li>
+            <span class="contrib-num">4</span>
+            <span><b>Extensive empirical evaluation.</b> Comprehensive experiments across diverse
+            generation and editing benchmarks demonstrate that UniAVC achieves performance
+            competitive with specialized state-of-the-art baselines across all supported creation
+            modes.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== METHOD ===================== -->
+<section class="section reveal" style="padding-top:0">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-title has-text-centered">Method</h2>
+
+    <figure class="fig">
+      <img src="static/images/architecture.png?v=ed6b2ee9" alt="UniAVC framework">
+      <figcaption class="paper-caption">
+        Illustration of the UniAVC framework.
+        <b>(a)</b> Two transformer stacks process video and audio, intersecting exclusively at
+        per-block cross-attention bridges whose modulation is driven by the partner branch's noise
+        level. Reference latents enter as in-context tokens concatenated to target tokens, with
+        attention masks applied so that reference tokens do not attend to noisy tokens in either
+        self- or cross-attention blocks. <b>(b)</b> Each branch first attains full generative and
+        editing competence on unimodal data in parallel; both branches are subsequently frozen, and
+        the paired corpus is used solely to train the cross-modal bridges.
+      </figcaption>
+    </figure>
+
+    <!-- Placed beside the figure, as the paper does with wrapfigure, and
+         sized to a fraction of the column so the panel does not dominate. -->
+    <div class="fig-side" style="margin-top:2.2rem">
+      <div class="fig-side-text">
+        <h3 class="title is-5">Why one schedule cannot serve both streams</h3>
+        <ul class="pinpoint-list">
+          <li><b>Structural and token disparity.</b> Video maintains a dense spatio-temporal structure, while audio is compressed into a highly sparse sequence. As a result, visual tokens outnumber audio tokens by more than an order of magnitude.</li>
+          <li><b>Distinct convergence timing.</b> Video requires a prolonged high-noise phase to establish global structure, motion, and identity, whereas audio settles into its final acoustic content much earlier.</li>
+          <li><b>The shared schedule compromise.</b> Tuning a single noise schedule for video leaves audio artificially noisy (ruining cross-modal conditioning), while tuning it for audio forces video to commit to fine details prematurely.</li>
+          <li><b>Diagonal training restriction.</b> Forcing equal noise levels on both streams restricts training to symmetric, "diagonal" noise states. This leaves the model completely unequipped for asymmetric tasks at inference, such as generating video conditioned on clean audio.</li>
+        </ul>
+      </div>
+      <figure class="fig fig-side-fig">
+        <img src="static/images/schedule.png?v=3e940900" alt="Single versus dual noise schedules">
+        <figcaption class="paper-caption">
+          Single vs. dual noise schedules.
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== QUANTITATIVE RESULTS ===================== -->
+<section class="section reveal" style="padding-top:0">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-title has-text-centered">Quantitative Results</h2>
+
+    <figure class="fig">
+      <img src="static/images/joint_edit.png?v=55473cec" alt="Joint audio-video editing results">
+      <figcaption class="paper-caption">
+        Quantitative comparisons for joint audio-video editing on JAVEditBench and the test split
+        of InsAVE-80K.
+      </figcaption>
+    </figure>
+
+    <div class="table-pair" style="margin-top:2.4rem">
+      <figure class="fig table-half is-joint-gen">
+        <img src="static/images/joint_gen.png?v=639fc28b" alt="Joint generation results on Verse-Bench">
+        <figcaption class="paper-caption">
+          Quantitative comparisons for joint generation on Verse-Bench.
+        </figcaption>
+      </figure>
+      <figure class="fig table-half is-cross-gen">
+        <img src="static/images/cross_gen.png?v=4b231f3c" alt="Cross-modal generation results on VGGSound">
+        <figcaption class="paper-caption">
+          Quantitative comparisons for cross-modal generation on the VGGSound test split.
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== COMPARISON ===================== -->
+<section class="section reveal" id="comparison">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-title has-text-centered">Comparisons with the State of the Art</h2>
+    <p class="gallery-hint has-text-centered">
+      Comparisons for joint audio-video editing against representative state-of-the-art methods.
+    </p>
+    <p class="gallery-hint has-text-centered"> 
+      <b>Click</b> to play and route the video sound, <b>Play</b> runs all videos, <b>Loop</b> repeats them, and <b>Focus</b> to enlarge resolution.
+    </p>
+
+    <div class="tabs is-toggle is-centered gallery-tabs" id="cmp-tabs">
+      <ul></ul>
+    </div>
+
+    <div class="sample-block" id="cmp-block">
+      <div class="cmp-stage" id="cmp-stage"></div>
+    </div>
+
+    <div class="filmstrip" id="cmp-strip"></div>
+
+  </div>
+</section>
+
+<!-- ===================== VERSATILITY DEMOS ===================== -->
+<section class="section reveal" style="padding-top:0" id="demos">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-title has-text-centered">Versatility Demos</h2>
+    <p class="gallery-hint has-text-centered">
+      Audio-video editing versatility of UniAVC across five task families.
+    </p>
+    <p class="gallery-hint has-text-centered"> 
+      <b>Click</b> to play videos and route the sounds, <b>Play</b> runs all videos, <b>Loop</b> repeats them, and <b>Focus</b> to enlarge resolution.
+    </p>
+
+    <div class="tabs is-toggle is-centered gallery-tabs" id="demo-tabs">
+      <ul></ul>
+    </div>
+
+    <div id="demo-panel"></div>
+
+    <div class="filmstrip" id="demo-strip"></div>
+
+  </div>
+</section>
+
+<!-- ===================== INFERENCE MODES ===================== -->
+<section class="section reveal" style="padding-top:0" id="inference">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-title has-text-centered">Inference Modes</h2>
+    <p class="gallery-hint has-text-centered">
+      <b>Intent-aware</b> editing holds the pinned stream exactly
+      and uses it to constrain the other. <b>Self-refinement</b> re-noises one branch against an
+      accepted counterpart to enhance quality.
+    </p>
+    <p class="gallery-hint has-text-centered"> 
+      <b>Click</b> to play videos and route the sounds, <b>Play</b> runs all videos, <b>Loop</b> repeats them, and <b>Focus</b> to enlarge resolution.
+    </p>
+    <div id="infer-panel"></div>
+
+    <div class="filmstrip" id="infer-strip"></div>
+
+  </div>
+</section>
+
+<!-- ===================== JOINT GALLERY ===================== -->
+<section class="section reveal" style="padding-top:0" id="joint">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-title has-text-centered">Joint Generation Gallery</h2>
+    <p class="gallery-hint has-text-centered">
+      Various clips produced by UniAVC from text prompts, with video and its synchronised
+      audio generated together. </p>
+    <p class="gallery-hint has-text-centered"> 
+      <b>Click</b> to play and <b>Focus</b> to enlarge.
+    </p>
+
+    <div class="video-grid" id="joint-grid"></div>
+
+  </div>
+</section>
+
+<!-- ===================== BIBTEX ===================== -->
+<section class="section reveal" id="bibtex">
+  <div class="container is-max-desktop bibtex-block">
+    <h2 class="title is-3 section-title">BibTeX</h2>
+    <pre><code>@article{pham2026uniavc,
+  title   = {UniAVC: Unified Audio-Video Creation via Progressive Training and Asymmetric Scheduling},
+  author  = {Pham, Kien T. and Liu, Yuhao and Choi, Chong Hou and He, Zhenqi and Wang, Yanghao
+             and Lei, Chenyang and Liu, Rui and Chen, Qifeng and Chen, Long},
+  journal = {arXiv preprint arXiv:2610.24791},
+  year    = {2026}
+}</code></pre>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8 has-text-centered content">
+        <p>
+          This website is licensed under a
+          <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+          Commons Attribution-ShareAlike 4.0 International License</a>. It borrows the page
+          layout from the <a href="https://nerfies.github.io/">Nerfies</a> project page.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<audio id="page-audio" src="static/audio/ambient.mp3?v=f0432dbc" preload="none" loop></audio>
+<script src="static/js/manifest.js?v=b4443708"></script>
+<script src="static/js/index_black.js?v=1b0d53ec"></script>
+<script src="static/js/hero_black.js?v=abe238ae"></script>
+</body>
+</html>

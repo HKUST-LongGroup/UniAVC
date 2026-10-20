@@ -1,0 +1,344 @@
+/* ===========================================================================
+   Cinematic hero for index_black.html
+   ---------------------------------------------------------------------------
+   Two bands of this project's own generated clips scroll across the full width
+   behind the title, looping left to right, with a slow particle field drifting
+   behind them. The music toggle lives in the top bar.
+
+   Layering, back to front:
+     .cine-nebula   colour, blurred
+     .cine-canvas   the particle field
+     .cine-wall     the two scrolling bands
+     .cine-scrim    the darkening that keeps the title readable
+     .cine-grain    fine noise, so the gradients do not band
+     .hero-body     the title itself
+
+   Everything is additive: with motion reduced, or without the script, the
+   bands stand still, the posters carry the wall, and the title is unchanged.
+   =========================================================================== */
+
+.hero-cine {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0;
+  isolation: isolate;
+}
+
+/* ---- the stage ----------------------------------------------------------- */
+.cine-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #05060a;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* soft colour behind everything, drifting slowly */
+.cine-nebula {
+  position: absolute;
+  inset: -25%;
+  z-index: 0;
+  background:
+    radial-gradient(36% 30% at 20% 28%, rgba(90, 162, 255, 0.34), transparent 62%),
+    radial-gradient(32% 26% at 80% 24%, rgba(167, 139, 250, 0.30), transparent 62%),
+    radial-gradient(38% 30% at 54% 84%, rgba(69, 215, 137, 0.20), transparent 66%);
+  filter: blur(72px) saturate(135%);
+  animation: cine-drift 40s ease-in-out infinite alternate;
+}
+@keyframes cine-drift {
+  from { transform: translate3d(-2.5%, -1.5%, 0) scale(1.03); }
+  to   { transform: translate3d( 2.5%,  2.0%, 0) scale(1.12); }
+}
+
+/* the particle field, behind the wall */
+.cine-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ---- the wall: two bands, scrolling left to right ------------------------
+   A band holds three identical copies of its run of clips and slides by
+   exactly one copy, so the seam is never visible. The tracks are as wide as
+   their content and the band clips the overflow, which means the clips fill
+   the full width at every viewport rather than sitting in a centred block. */
+.cine-wall {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  /* no justify-content: the bands divide the whole height between them, so the
+     wall covers the header edge to edge instead of sitting in a centred strip */
+  gap: clamp(8px, 1vw, 16px);
+}
+.cine-band {
+  position: relative;
+  overflow: hidden;
+  /* an equal share of the header, so the grid always fills it */
+  flex: 1 1 0;
+  min-height: 0;
+  /* a soft edge at each side, so clips enter and leave rather than appearing */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+}
+.cine-track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  /* A duration is not optional. The shorthand once named the animation without
+     one, which leaves it at 0s -- the track then jumps to its end state, so the
+     wall looked frozen even though the animation "ran". Every row sets its own
+     duration below; this is the value if one ever goes missing. */
+  animation: cine-marquee-fwd 44s linear infinite;
+  will-change: transform;
+}
+/* Each row carries its own direction and speed: two travel left, one right, and
+   the three speeds are distinct so no pair drifts in lockstep. The middle row is
+   the slowest, which settles the eye at the centre of the header. */
+.cine-band.is-row-a .cine-track {
+  animation-name: cine-marquee-fwd;      /* left */
+  animation-duration: 36s;
+}
+.cine-band.is-row-b .cine-track {
+  animation-name: cine-marquee-back;     /* right */
+  animation-duration: 62s;
+}
+.cine-band.is-row-c .cine-track {
+  animation-name: cine-marquee-fwd;      /* left */
+  animation-duration: 48s;
+}
+/* each copy carries its own trailing space, so one copy is exactly a third of
+   the track and a shift of -33.333% lands on an identical frame */
+.cine-copy {
+  display: flex;
+  gap: clamp(8px, 1vw, 16px);
+  padding-right: clamp(8px, 1vw, 16px);
+  height: 100%;
+}
+/* Both bands travel LEFT TO RIGHT. The second runs slower, so the two drift
+   against each other rather than reading as one block sliding by. */
+/* Three copies per row, so one copy is a third of the track and the shift is
+   100/3 %. */
+@keyframes cine-marquee-fwd {
+  from { transform: translate3d(-33.3333%, 0, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
+@keyframes cine-marquee-back {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-33.3333%, 0, 0); }
+}
+
+.cine-tile {
+  position: relative;
+  flex: 0 0 auto;
+  /* the band gives the height, the ratio gives the width: this is what makes
+     the tiles scale up to cover the header and stay in proportion with it */
+  height: 100%;
+  width: auto;
+  aspect-ratio: 16 / 10;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #080a0f;
+  box-shadow: 0 10px 38px rgba(0, 0, 0, 0.62), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  opacity: 0;
+  transform: scale(0.96);
+}
+.cine-stage.is-lit .cine-tile {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.9s cubic-bezier(0.22, 0.7, 0.3, 1) var(--d, 0s),
+              transform 0.9s cubic-bezier(0.22, 0.7, 0.3, 1) var(--d, 0s);
+}
+.cine-tile img,
+.cine-tile video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* the poster holds the frame until the clip is ready to take over */
+.cine-tile img { transition: opacity 0.5s ease; }
+.cine-tile video { opacity: 0; transition: opacity 0.5s ease; }
+.cine-tile.is-live video { opacity: 1; }
+.cine-tile.is-live img { opacity: 0; }
+
+/* ---- legibility ----------------------------------------------------------
+   The clips fill the width, so the title needs its own pool of darkness. This
+   is the single knob for how far the wall reads through behind the title. */
+.cine-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background:
+    radial-gradient(46% 42% at 50% 48%,
+      rgba(4, 5, 9, 0.94) 0%,
+      rgba(4, 5, 9, 0.80) 42%,
+      rgba(4, 5, 9, 0.36) 72%,
+      rgba(4, 5, 9, 0) 100%),
+    linear-gradient(180deg,
+      rgba(4, 5, 9, 0.86) 0%,
+      rgba(4, 5, 9, 0.20) 26%,
+      rgba(4, 5, 9, 0.22) 64%,
+      rgba(4, 5, 9, 0.95) 100%);
+}
+
+/* fine grain, so the gradients do not band on a dark panel */
+.cine-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'>\
+<filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/></filter>\
+<rect width='140' height='140' filter='url(%23n)'/></svg>");
+}
+
+/* ---- the title sits above the stage -------------------------------------- */
+/* The title block is centred in the header vertically as well as across: the
+   hero is a flex box, so the body takes the middle of the free space rather
+   than sitting under a fixed top padding. */
+.hero-cine .hero-body {
+  position: relative;
+  z-index: 6;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: 5rem 1.5rem 6rem;
+}
+.hero-cine .container { animation: cine-rise 1.1s cubic-bezier(0.22, 0.7, 0.3, 1) 0.2s both; }
+@keyframes cine-rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+/* The hero column runs wider than the text column the rest of the page uses.
+   The title is 84 characters; two lines need roughly 1100px at the size below,
+   and the standard 960px column could not hold that, which is why the break
+   used to fall awkwardly. */
+.hero-cine .container { max-width: min(1240px, 94vw); }
+.hero-cine .publication-title {
+  /* Sized so the 91-character title lands on two lines at the hero column's
+     width. It is deliberately close to the limit, so if the copy changes this
+     is the number to revisit. */
+  font-size: clamp(2.05rem, 4.4vw, 3.15rem);
+  text-wrap: balance;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.8);
+}
+.hero-cine .publication-authors { text-shadow: 0 1px 16px rgba(0, 0, 0, 0.8); }
+
+/* ---- scroll cue ---------------------------------------------------------- */
+.cine-scroll {
+  position: absolute;
+  left: 50%;
+  bottom: 1.4rem;
+  z-index: 6;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  animation: cine-bob 2.4s ease-in-out infinite;
+}
+.cine-scroll i { font-size: 0.72rem; }
+.cine-scroll.is-gone { opacity: 0; }
+@keyframes cine-bob {
+  0%, 100% { transform: translate(-50%, 0); }
+  50%      { transform: translate(-50%, 6px); }
+}
+
+/* The bar floats over the hero rather than banding it, until it sticks. */
+.topbar:not(.is-stuck) {
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border-bottom-color: transparent;
+}
+
+/* ---- music toggle -------------------------------------------------------- */
+.sound-toggle {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 5px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--rule-strong);
+  background: var(--panel);
+  color: var(--ink-2);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+.sound-toggle:hover { color: var(--ink); background: var(--panel-hi); border-color: var(--rule-strong); }
+.sound-toggle.is-on {
+  color: #08090c;
+  background: var(--grad);
+  border-color: transparent;
+}
+/* three bars that lift while the music plays */
+.sound-bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 12px; }
+.sound-bars i {
+  width: 2px;
+  height: 4px;
+  border-radius: 1px;
+  background: currentColor;
+  animation: sound-bar 1.1s ease-in-out infinite;
+}
+.sound-bars i:nth-child(2) { animation-delay: 0.22s; }
+.sound-bars i:nth-child(3) { animation-delay: 0.44s; }
+@keyframes sound-bar {
+  0%, 100% { height: 4px; }
+  50%      { height: 11px; }
+}
+/* still and quiet when it is off */
+.sound-toggle:not(.is-on) .sound-bars i { animation: none; height: 3px; opacity: 0.5; }
+
+/* On a narrow screen three bands leave each tile too little height to read, so
+   they drop to two and the tiles take a taller share of the header. */
+@media (max-width: 760px) {
+  .cine-wall { gap: 8px; }
+  .sound-toggle .sound-label { display: none; }
+}
+@media (max-height: 620px) {
+  .hero-cine { min-height: 620px; }
+}
+
+/* ---- motion reduced: a still, quiet first screen -------------------------
+   The bands stop, the clips stay as posters, the field is not drawn, and the
+   title never animates in. Nothing moves, and nothing is hidden. */
+@media (prefers-reduced-motion: reduce) {
+  .cine-nebula, .cine-scroll, .cine-track { animation: none !important; }
+  .cine-track { transform: translate3d(-16.6666%, 0, 0); }
+  .cine-tile { opacity: 1; transform: none; transition: none; }
+  .cine-stage.is-lit .cine-tile { transition: none; }
+  .hero-cine .container { animation: none; }
+  .sound-bars i { animation: none !important; }
+  .cine-canvas { display: none; }
+}
