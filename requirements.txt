@@ -1,0 +1,25 @@
+# Minimal install for UniAVC inference.
+# For a specific CUDA build, install torch first from the matching index, e.g.
+#   pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128
+torch==2.8.0
+torchvision==0.23.0
+torchaudio==2.8.0
+# FlashAttention: the fast kernel for the packed attention path. Prebuilt wheel for
+# this exact stack -- cp310 / torch 2.8 / cu128 -- because building from source takes
+# tens of minutes and needs a matching CUDA toolkit. Without it the code still runs:
+# packed attention falls back to a bit-identical SDPA-per-segment loop, just slower.
+# Change the tag if your python/torch/CUDA differ (cp311, torch2.9, cu126, ...).
+https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.7.16/flash_attn-2.8.3+cu128torch2.8-cp310-cp310-linux_x86_64.whl
+transformers>=4.51
+diffusers>=0.35
+accelerate
+einops
+safetensors
+imageio[ffmpeg]
+numpy
+pillow
+tqdm
+modelscope
+ftfy
+av
+gradio

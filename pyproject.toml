@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "uniavc"
+version = "1.0.0"
+description = "UniAVC: Unified Audio-Video Creation via Progressive Training and Asymmetric Scheduling"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [
+    { name = "Kien T. Pham" },
+    { name = "Yuhao Liu" },
+    { name = "Chong Hou Choi" },
+    { name = "Zhenqi He" },
+    { name = "Yanghao Wang" },
+    { name = "Chenyang Lei" },
+    { name = "Rui Liu" },
+    { name = "Qifeng Chen" },
+    { name = "Long Chen" },
+]
+dependencies = [
+    "torch==2.8.0",
+    "torchvision==0.23.0",
+    "torchaudio==2.8.0",
+    "https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.7.16/flash_attn-2.8.3+cu128torch2.8-cp310-cp310-linux_x86_64.whl",
+    "transformers>=4.51",
+    "diffusers>=0.35",
+    "accelerate",
+    "einops",
+    "safetensors",
+    "imageio[ffmpeg]",
+    "numpy",
+    "pillow",
+    "tqdm",
+    "modelscope",
+    "ftfy",
+    "av",
+    "gradio",
+]
+
+[project.optional-dependencies]
+dev = ["ruff"]
+
+[tool.setuptools.packages.find]
+include = ["uniavc*"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"

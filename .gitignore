@@ -1,0 +1,30 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+
+# Model weights and generated media. `models/` and `outputs/` are anchored to the
+# repo root: unanchored, they also match any directory of that name at any depth,
+# which silently excluded the whole uniavc/models/ package.
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+/models/
+/outputs/
+*.mp4
+*.wav
+*.mp3
+
+# ...except the demo video the README embeds, and the sample clips the
+# README points at, which are small enough to ship.
+!assets/*.mp4
+!samples/*.mp4
+
+# Caches
+.ruff_cache/
+.hf_modules_cache/
+.DS_Store
