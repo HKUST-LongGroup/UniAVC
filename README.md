@@ -18,6 +18,8 @@
 
 <a href="mailto:tkpham@connect.ust.hk">tkpham@connect.ust.hk</a> &nbsp;&middot;&nbsp; <a href="mailto:longchen@ust.hk">longchen@ust.hk</a>
 
+If you find UniAVC useful for your research, please consider giving a star ⭐ and citation 📝 !
+
 </div>
 
 ---
@@ -437,11 +439,10 @@ If you find UniAVC useful for your research, please consider giving a star ⭐ a
 
 ```bibtex
 @article{pham2026uniavc,
-  title   = {UniAVC: Unified Audio-Video Creation via Progressive Training and Asymmetric Scheduling},
-  author  = {Pham, Kien T. and Liu, Yuhao and Choi, Chong Hou and He, Zhenqi and Wang, Yanghao
-             and Lei, Chenyang and Liu, Rui and Chen, Qifeng and Chen, Long},
-  journal = {arXiv preprint arXiv:2610.24791},
-  year    = {2026}
+  title={UniAVC: Unified Audio-Video Creation via Progressive Training and Asymmetric Scheduling},
+  author={Pham, Kien T and Liu, Yuhao and Choi, Chong Hou and He, Zhenqi and Wang, Yanghao and Lei, Chenyang and Liu, Rui and Chen, Qifeng and Chen, Long},
+  journal={arXiv preprint arXiv:2610.24791},
+  year={2026}
 }
 ```
 
