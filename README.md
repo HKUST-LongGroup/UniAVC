@@ -12,7 +12,8 @@
 <a href="LICENSE"><img src="https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg" alt="License"></a>
 <img src="https://visitor-badge.laobi.icu/badge?page_id=HKUST-LongGroup.UniAVC" alt="Visitors">
 
-**Kien T. Pham<sup>1</sup>, Yuhao Liu<sup>2</sup>, Chong Hou Choi<sup>2</sup>, Zhenqi He<sup>1</sup>, Yanghao Wang<sup>1</sup>, Chenyang Lei<sup>2</sup>, Rui Liu<sup>2</sup>, Qifeng Chen<sup>1</sup>, Long Chen<sup>1</sup>**
+**Kien T. Pham<sup>1</sup>, Yuhao Liu<sup>2‡</sup>, Chong Hou Choi<sup>2</sup>, Zhenqi He<sup>1</sup>, Yanghao Wang<sup>1</sup>, Chenyang Lei<sup>2</sup>, Rui Liu<sup>2</sup>, Qifeng Chen<sup>1</sup>, Long Chen<sup>1</sup>**
+
 
 <sup>1</sup>The Hong Kong University of Science and Technology &nbsp;&nbsp; <sup>2</sup>Huawei Research
 
